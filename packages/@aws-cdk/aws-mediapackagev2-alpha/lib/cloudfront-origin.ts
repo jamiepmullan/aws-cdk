@@ -107,7 +107,12 @@ export class MediaPackageV2Origin extends cloudfront.OriginBase {
         resources: [this.endpoint.originEndpointArn],
         conditions: {
           StringEquals: {
-            'aws:SourceArn': `arn:${cdk.Aws.PARTITION}:cloudfront::${cdk.Aws.ACCOUNT_ID}:distribution/${options.distributionId}`,
+            'aws:SourceArn': cdk.Stack.of(scope).formatArn({
+              service: 'cloudfront',
+              region: '',
+              resource: 'distribution',
+              resourceName: options.distributionId,
+            }),
           },
         },
       }),

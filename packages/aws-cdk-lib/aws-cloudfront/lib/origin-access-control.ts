@@ -82,20 +82,7 @@ export interface FunctionUrlOriginAccessControlProps extends OriginAccessControl
 /**
  * Properties for creating a MediaPackage V2 Origin Access Control resource.
  */
-export interface MediaPackageV2OriginAccessControlProps {
-  /**
-   * A description of the origin access control.
-   *
-   * @default - no description
-   */
-  readonly description?: string;
-  /**
-   * A name to identify the origin access control, with a maximum length of 64 characters.
-   *
-   * @default - a generated name
-   */
-  readonly originAccessControlName?: string;
-}
+export interface MediaPackageV2OriginAccessControlProps extends OriginAccessControlBaseProps { }
 
 /**
  * Origin types supported by Origin Access Control.
@@ -354,8 +341,8 @@ export class MediaPackageV2OriginAccessControl extends OriginAccessControlBase {
       originAccessControlConfig: {
         description: props.description,
         name: props.originAccessControlName ?? Names.uniqueResourceName(this, { maxLength: 64 }),
-        signingBehavior: SigningBehavior.ALWAYS,
-        signingProtocol: SigningProtocol.SIGV4,
+        signingBehavior: props.signing?.behavior ?? SigningBehavior.ALWAYS,
+        signingProtocol: props.signing?.protocol ?? SigningProtocol.SIGV4,
         originAccessControlOriginType: OriginAccessControlOriginType.MEDIAPACKAGEV2,
       },
     });
